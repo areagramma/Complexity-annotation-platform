@@ -1,0 +1,17 @@
+html,
+body {
+height: 100%;
+}
+
+.container {
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.selected { background-color: yellow; display: inline; }
+
+#test{
+    background-color: crimson;
+}

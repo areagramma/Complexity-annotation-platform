@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Propozitii</title>
+    <style>
+            html,
+    body {
+    height: 100%;
+    }
+
+    .text{
+    font-size: 30px;
+    font-weight: bold;
+    }
+
+    .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .selected { background-color: yellow; display: inline; }
+
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class = "container mt-5">
+        <div><p id = "test" class="mb-5">Selecteaza un cuvant/mai multe cuvinte pentru a le puncta dificultatea</p>
+
+           <p>
+               {% for elem in corpus[id_prop] %}
+
+               <span  class = "text">{{elem}}</span>
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+
+        <button type="button" onclick="previous_prop()" class="btn btn-dark ml-3 mt-5">Inapoi</button>
+        <button type="button" onclick="next_prop()" class="btn btn-dark float-right mr-3 mt-5">Inainte</button>
+  </body>
+
+<script>
+   	(function(){
+   	    punctuatie = ['.', ',', '!', '?', ';', ':', '~', '=', '+',' '];
+		const textDom = document.getElementsByClassName("text");
+		console.log(textDom.length)
+        for(const propozitie of textDom) {
+            const text = propozitie.textContent;
+           //console.log(el) console.log(text)
+            propozitie.innerHTML = '';
+            for (const item of text.split(" ")) {
+                const el = document.createElement('span');
+
+                el.textContent = item;
+                console.log("textul din el:"+ el.textContent)
+                if(punctuatie.includes(el.textContent)){
+                    el.className = 'non-selectable';
+                    console.log("FOR")
+                }
+                else{
+                  el.className = 'selectable';
+                }
+                propozitie.innerHTML += " ";
+                propozitie.appendChild(el);
+            }
+
+            for (const textItem of Array.prototype.slice.call(propozitie.querySelectorAll('span.selectable'))) {
+                textItem.addEventListener('click', function () {
+                    this.classList.toggle('selected');
+                     console.log(textItem)
+                });
+            }
+        }
+	})();
+
+   	function previous_prop(){
+   	    let url_inapoi = window.location.href;
+   	    console.log(url_inapoi)
+        let id_lista = url_inapoi.split('id_prop=')
+        let id = id_lista[1][0]
+        if(Number(id) === 0){
+            url_2 = url_inapoi;
+        }
+        else{
+            url_2 = url_inapoi.replace('id_prop='+id, 'id_prop='+Number(--id))
+        }
+         console.log(url_2)
+         window.location = url_2;
+    }
+
+    function next_prop(){
+   	    let url_inainte = window.location.href;
+   	    console.log(url_inainte)
+        let id_lista = url_inainte.split('id_prop=')
+        let id = id_lista[1][0]
+
+        if(Number(id) === 0){
+            url_2 = url_inainte;
+        }
+        else{
+            url_2 = url_inainte.replace('id_prop='+id, 'id_prop='+Number(++id))
+        }
+         console.log(url_2)
+         window.location = url_2;
+    }
+
+</script>
+</html>
